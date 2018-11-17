@@ -107,7 +107,7 @@ def breadthFirstSearch(problem):
         return start.path()
 
     expanded  = set()
-    
+
     while True:
         if fringe.isEmpty():
             return self.fail('Solution not found')
@@ -123,29 +123,29 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    start=problem.getStartState()
+    start = node.Node(problem.getStartState())
     fringe=util.PriorityQueue()
-    fringe.push(start,start.cost)
-
-    if fringe.isEmpty() == False:
-        problem.isGoalState(fringe.pop())
+    fringe.push(start,0)
 
     expanded = {}
+    expanded[start.state] = [start,False]
 
     while True:
         if fringe.isEmpty():
             return self.fail('Solution not found')
-        n= fringe.pop()
-        if problem.isGoalState(n):
+        n = fringe.pop()
+        if problem.isGoalState(n.state):
             return n.path()
-        expanded.push(n)
-        for succ, action, cost in problem.getSuccessors(n.state):
-            ns=node.Node(succ,n,action,cost)
-            if ns not in fringe and ns not in expanded:
-                fringe.push(ns, ns.cost)
-            elif ns in fringe and ns.cost:
-                pass
-
+        if expanded[n.state][1] == False:
+            expanded[n.state] = [n,True] #instanced and expanded
+            for succ, action, cost in problem.getSuccessors(n.state):
+                ns=node.Node(succ,n,action,n.cost+cost)
+                if ns.state not in expanded.keys():
+                    fringe.push(ns, ns.cost)
+                    expanded[ns.state] = [ns,False]
+                elif expanded[ns.state][1] == False and expanded[ns.state][0].cost > ns.cost:
+                    fringe.push(ns, ns.cost)
+                    expanded[ns.state] = [ns,False]
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
