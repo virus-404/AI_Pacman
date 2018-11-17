@@ -11,6 +11,5 @@ class Node:
             pa.append(self.action)
             self=self.parent
         return list(reversed(pa))
-
-	def __str__(self):
-        return "--Node: {0} --\n Parent: {1}\n Action: {2}\n Cost: {3}".format(self.state, self.parent, self.action, self.cost)
+    def __str__(self):
+		return "--Node: {0} --\n Parent: {1}\n Action: {2}\n Cost: {3}".format(self.state, self.parent, self.action, self.cost)
