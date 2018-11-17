@@ -13,9 +13,4 @@ class Node:
         return list(reversed(pa))
 
 	def __str__(self):
-		return "--Node: {0} --\n Parent: {1}\n Action: {2}\n Cost: {3}".format(self.state, self.parent, self.action, self.cost)
-
-    def __eq__(self, other):
-        if isinstance(other, Node):
-            return self.state == other.state 
-        return False
+return "--Node: {0} --\n Parent: {1}\n Action: {2}\n Cost: {3}".format(self.state, self.parent, self.action, self.cost)
