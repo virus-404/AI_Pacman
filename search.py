@@ -73,39 +73,59 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
-
     fringe = util.Stack()
     fringe.push(problem.getStartState())
-    expaned = {}
 
     if fringe.isEmpty() == False:
         problem.isGoalState(fringe.pop())
     fringe.push(problem.getStartState())
 
+    expaned = {}
+
     while True:
         if fringe.isEmpty():
             return self.fail('Solution not found')
-        elem=fringe.pop()
-        fringe.push()
-
+        n=fringe.pop()
+        expaned.push(n)
+        for succ, action, cost in problem.getSuccessors(n.state):
+            ns=node.Node(succ,n,action,cost)
+            if succ not in fringe and succ not in expaned:
+                if problem.isGoalState(succ):
+                    return ns.path()
+                fringe.push(ns)
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     start = problem.getStartState()
+    fringe = [problem.getStartState()]
 
     if problem.isGoalState(stat):
         print "Solution"
         sys.exit(0)
 
-    fringe = [problem.getStartState()]
-    expaned  = []
+    expanded  = []
 
     while True:
+        if fringe.isEmpty():
+            return self.fail('Solution not found')
+        n=fringe.pop()
+        expaned.push(n)
+        for succ, action, cost in problem.getSuccessors(n.state):
+            ns=node.Node(succ,n,action,cost)
+            if succ not in fringe and succ not in expaned:
+                if problem.isGoalState(succ):
+                    return ns.path()
+                fringe.push(ns)
+    util.raiseNotDefined()
+
+    while True:
+
         if len(fringe) == 0:
             print "No Solution"
         n = fringe.pop(0)
         expaned.append(n)
+
         for succ, action, cost in problem.getSuccessors(n):
             if succ not in fringe and succ not in expaned:
                 if problem.isGoalState(succ):
@@ -118,6 +138,9 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
+
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
