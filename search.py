@@ -88,10 +88,10 @@ def depthFirstSearch(problem):
         if fringe.isEmpty():
             return self.fail('Solution not found')
         n=fringe.pop()
-        expanded.add(n)
+        expanded.add(n.state)
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
-            if succ not in expanded:
+            if ns.state not in expanded:
                 if problem.isGoalState(succ):
                     return ns.path()
                 fringe.push(ns)
@@ -107,20 +107,19 @@ def breadthFirstSearch(problem):
         return start.path()
 
     expanded  = set()
-
+    
     while True:
         if fringe.isEmpty():
             return self.fail('Solution not found')
         n=fringe.pop()
-        expanded.add(n)
+        expanded.add(n.state)
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
-            if succ not in expanded:
+            if ns.state not in expanded:
                 if problem.isGoalState(succ):
                     return ns.path()
                 fringe.push(ns)
     util.raiseNotDefined()
-
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
