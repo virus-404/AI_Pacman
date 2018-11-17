@@ -73,23 +73,26 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
+    start = problem.getStartState()
     fringe = util.Stack()
+    fringe.push(start)
+
+    if problem.isGoalState(start):
+        print "Solution"
+        sys.exit(0)
+
     fringe.push(problem.getStartState())
 
-    if fringe.isEmpty() == False:
-        problem.isGoalState(fringe.pop())
-    fringe.push(problem.getStartState())
-
-    expaned = {}
+    expanded = {}
 
     while True:
         if fringe.isEmpty():
             return self.fail('Solution not found')
         n=fringe.pop()
-        expaned.push(n)
+        expanded.push(n)
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
-            if succ not in fringe and succ not in expaned:
+            if succ not in fringe and succ not in expanded:
                 if problem.isGoalState(succ):
                     return ns.path()
                 fringe.push(ns)
@@ -98,9 +101,10 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     start = problem.getStartState()
-    fringe = [problem.getStartState()]
+    fringe = util.Queue()
+    fringe.push(start)
 
-    if problem.isGoalState(stat):
+    if problem.isGoalState(start):
         print "Solution"
         sys.exit(0)
 
@@ -110,10 +114,10 @@ def breadthFirstSearch(problem):
         if fringe.isEmpty():
             return self.fail('Solution not found')
         n=fringe.pop()
-        expaned.push(n)
+        expanded.push(n)
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
-            if succ not in fringe and succ not in expaned:
+            if succ not in fringe and succ not in expanded:
                 if problem.isGoalState(succ):
                     return ns.path()
                 fringe.push(ns)
@@ -124,22 +128,38 @@ def breadthFirstSearch(problem):
         if len(fringe) == 0:
             print "No Solution"
         n = fringe.pop(0)
-        expaned.append(n)
+        expanded.append(n)
 
-        for succ, action, cost in problem.getSuccessors(n):
-            if succ not in fringe and succ not in expaned:
+        for succ, action, cost in problem.getSuccessors(n.state):
+            if succ not in fringe and succ not in expanded:
                 if problem.isGoalState(succ):
                     print "Solution"
-                    sys.exit(0)
+                    return ns.path()
                 fringe.append(succ)
 
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
+    start=problem.getStartState()
+    fringe=util.PriorityQueue()
+    pringe.push(start,start.cost)
 
+    if fringe.isEmpty() == False:
+        problem.isGoalState(fringe.pop())
 
+    expanded = {}
+
+    while True:
+        if fringe.isEmpty():
+            return self.fail('Solution not found')
+        n= fringe.pop()
+        if problem.isGoalState(n):
+            return n.path()
+        expanded.push(n)
+
+        for succ, action, cost in problem.getSuccessors(n.state):
+            ns=node.Node(succ,action,)
 
     util.raiseNotDefined()
 
