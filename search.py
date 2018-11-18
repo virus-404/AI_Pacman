@@ -125,7 +125,7 @@ def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     start = node.Node(problem.getStartState())
     fringe=util.PriorityQueue()
-    fringe.push(start,sys.maxint)
+    fringe.push(start,0)
 
     expanded = {}
 
@@ -139,9 +139,9 @@ def uniformCostSearch(problem):
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
             if ns.state not in expanded.keys():
-                fringe.push(ns,sys.maxint - ns.cost)
+                fringe.push(ns, ns.cost)
             elif ns.state in expanded.keys() and expanded[ns.state].cost > ns.cost:
-                fringe.update(ns, sys.maxint - ns.cost)
+                fringe.update(ns,ns.cost)
 
     util.raiseNotDefined()
 
@@ -156,7 +156,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     start = node.Node(problem.getStartState())
     fringe=util.PriorityQueue()
-    fringe.push(start,sys.maxint)
+    fringe.push(start,0)
 
     expanded = {}
 
@@ -170,9 +170,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
             if ns.state not in expanded.keys():
-                fringe.push(ns,sys.maxint - (ns.cost + heuristic(succ, problem)))
+                fringe.push(ns,ns.cost + heuristic(succ, problem))
             elif ns.state in expanded.keys() and expanded[ns.state].cost > ns.cost:
-                fringe.update(ns, sys.maxint - ns.cost)
+                fringe.update(ns, ns.cost)
     util.raiseNotDefined()
 
 # Abbreviations
