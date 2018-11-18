@@ -183,7 +183,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 fringe.update(ns, ns.cost)
     util.raiseNotDefined()
 
-def bestFirstSearch(problem, heuristic=nullHeuristic):
+def greedyBestFirstSearch(problem, heuristic=nullHeuristic):
     """It makes a locally-optimal choice in the hope that this choice will lead to a globally-optimal solution. """
     start = node.Node(problem.getStartState())
     fringe=util.PriorityQueue()
@@ -200,11 +200,11 @@ def bestFirstSearch(problem, heuristic=nullHeuristic):
         expanded[n.state] = n
         for succ, action, cost in problem.getSuccessors(n.state):
             ns=node.Node(succ,n,action,cost)
-            if heuristic(succ, problem) > heuristic (n.state, problem):
+            if ns.state not in expanded.keys() and heuristic(succ, problem) < heuristic(n.state, problem):
+                fringe.push(ns, 0)
+                fringe.push(n, 1)
+            elif ns.state not in expanded.keys():
                 fringe.push(ns, heuristic(succ, problem))
-                fringe.push(n, heuristic (n.state, problem))
-            else:
-                fringe.push(n, heuristic (n.state, problem))
     util.raiseNotDefined()
 
 def bidirectionalSearch(problem):
@@ -250,8 +250,6 @@ def bidirectionalSearch(problem):
                     return tmp
     util.raiseNotDefined()
 
-def greedyBestFirstSearch(problem):
-    util.raiseNotDefined()
 
 # Abbreviations
 bfs = breadthFirstSearch
