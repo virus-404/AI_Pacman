@@ -35,6 +35,12 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
+    def getGoalState(self):
+        """
+        Returns the goal state for the search problem.
+        """
+        util.raiseNotDefined()
+
     def isGoalState(self, state):
         """
           state: Search state
@@ -42,6 +48,8 @@ class SearchProblem:
         Returns True if and only if the state is a valid goal state.
         """
         util.raiseNotDefined()
+
+    #def setGoalState(self,state):
 
     def getSuccessors(self, state):
         """
@@ -175,8 +183,80 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 fringe.update(ns, ns.cost)
     util.raiseNotDefined()
 
+def bestFirstSearch(problem, heuristic=nullHeuristic):
+    """It makes a locally-optimal choice in the hope that this choice will lead to a globally-optimal solution. """
+    start = node.Node(problem.getStartState())
+    fringe=util.PriorityQueue()
+    fringe.push(start,0)
+
+    expanded = {}
+
+    while True:
+        if fringe.isEmpty():
+            return self.fail('Solution not found')
+        n = fringe.pop()
+        if problem.isGoalState(n.state):
+            return n.path()
+        expanded[n.state] = n
+        for succ, action, cost in problem.getSuccessors(n.state):
+            ns=node.Node(succ,n,action,cost)
+            if heuristic(succ, problem) > heuristic (n.state, problem):
+                fringe.push(ns, heuristic(succ, problem))
+                fringe.push(n, heuristic (n.state, problem))
+            else:
+                fringe.push(n, heuristic (n.state, problem))
+    util.raiseNotDefined()
+
+def bidirectionalSearch(problem):
+    start = node.Node(problem.getStartState())
+    end = node.Node(problem.getGoalState())
+
+    fringe_start = util.Queue()
+    fringe_start.push(start)
+    fringe_end = util.Queue()
+    fringe_end.push(end)
+
+    if start == end:
+        return start.path()
+
+    expanded_start  = {}
+    expanded_end  = {}
+
+    while True:
+        if fringe_start.isEmpty() or fringe_end.isEmpty():
+            return self.fail('Solution not found')
+
+        n_start=fringe_start.pop()
+        expanded_start[n_start.state] = n_start
+        for succ, action, cost in problem.getSuccessors(n_start.state):
+            ns=node.Node(succ,n_start,action,cost)
+            if ns.state not in expanded_start.keys():
+                fringe_start.push(ns)
+                if ns.state in expanded_end.keys():
+                    tmp = ns.path()
+                    end = expanded_end[ns.state].parent
+                    tmp.append(reversed(end.path()))
+                    return tmp
+        n_end=fringe_end.pop()
+        expanded_end[n_end.state] = n_end
+        for succ, action, cost in problem.getSuccessors(n_end.state):
+            ns=node.Node(succ,n_end,action,cost)
+            if ns.state not in expanded_end.keys():
+                fringe_end.push(ns)
+                if ns.state in expanded_start.keys():
+                    tmp = ns.path()
+                    start = expanded_start[ns.state].parent
+                    tmp.append(reversed(start.path()))
+                    return tmp
+    util.raiseNotDefined()
+
+def greedyBestFirstSearch(problem):
+    util.raiseNotDefined()
+
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+bds = bidirectionalSearch
+bfsh = greedyBestFirstSearch
